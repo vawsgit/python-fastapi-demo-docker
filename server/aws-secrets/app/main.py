@@ -33,12 +33,12 @@ def get_book(db: Session, book_id: int):
 
 @app.get("/")
 def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html", {"request": request})
 
 
 @app.get("/create_book")
 def create_book_form(request: Request):
-    return templates.TemplateResponse("create_book.html", {"request": request})
+    return templates.TemplateResponse(request, "create_book.html", {"request": request})
 
 
 @app.post("/books")
@@ -59,7 +59,7 @@ def create_book_api(
 def list_books(request: Request, db: Session = Depends(get_db)):
     books = db.query(Book).all()
     return templates.TemplateResponse(
-        "list_books.html", {"request": request, "books": books}
+        request, "list_books.html", {"request": request, "books": books}
     )
 
 
@@ -67,7 +67,7 @@ def list_books(request: Request, db: Session = Depends(get_db)):
 def read_book(request: Request, book_id: int, db: Session = Depends(get_db)):
     book = get_book(db, book_id)
     return templates.TemplateResponse(
-        "book_details.html", {"request": request, "book": book}
+        request, "book_details.html", {"request": request, "book": book}
     )
 
 
@@ -75,7 +75,7 @@ def read_book(request: Request, book_id: int, db: Session = Depends(get_db)):
 def update_book_form(request: Request, book_id: int, db: Session = Depends(get_db)):
     book = get_book(db, book_id)
     return templates.TemplateResponse(
-        "update_book.html", {"request": request, "book": book}
+        request, "update_book.html", {"request": request, "book": book}
     )
 
 
@@ -102,5 +102,5 @@ def delete_book(request: Request, book_id: int, db: Session = Depends(get_db)):
     db.delete(book)
     db.commit()
     return templates.TemplateResponse(
-        "delete_book.html", {"request": request, "book": book}
+        request, "delete_book.html", {"request": request, "book": book}
     )
