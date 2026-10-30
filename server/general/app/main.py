@@ -43,11 +43,20 @@ def create_book_form(request: Request):
 
 @app.post("/books")
 def create_book_api(
+    request: Request,
     title: str = Form(...),
     author: str = Form(...),
     description: str = Form(...),
     db: Session = Depends(get_db),
 ):
+    title = title.strip()
+    if not title:
+        return templates.TemplateResponse(
+            request,
+            "create_book.html",
+            {"request": request, "error": "Title is required."},
+            status_code=422,
+        )
     book = Book(title=title, author=author, description=description)
     db.add(book)
     db.commit()
@@ -89,6 +98,14 @@ def update_book(
     db: Session = Depends(get_db),
 ):
     book = get_book(db, book_id)
+    title = title.strip()
+    if not title:
+        return templates.TemplateResponse(
+            request,
+            "update_book.html",
+            {"request": request, "book": book, "error": "Title is required."},
+            status_code=422,
+        )
     book.title = title
     book.author = author
     book.description = description
