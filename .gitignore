@@ -169,3 +169,5 @@ cython_debug/
 
 .vscode/settings.json
 .vscode-web/
+.claude/
+.worktrees/
