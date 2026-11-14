@@ -4,7 +4,7 @@ Date: 2026-11-10
 
 ## Status
 
-Accepted
+Superseded by [0002](0002-redis-caches-book-lookups.md)
 
 ## Context
 
