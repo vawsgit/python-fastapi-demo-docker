@@ -5,8 +5,10 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from app.models import Base, Book
 from app.connect import db_session, engine
+from app.summary import router as summary_router
 
 app = FastAPI()
+app.include_router(summary_router)
 
 Base.metadata.create_all(bind=engine)
 
