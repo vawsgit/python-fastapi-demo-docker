@@ -89,8 +89,8 @@ def update_book(
     db: Session = Depends(get_db),
 ):
     book = get_book(db, book_id)
-    book.title = title
-    book.author = author
+    book.title = title.strip()
+    book.author = author.strip()
     book.description = description
     db.commit()
     return RedirectResponse(url=f"/books/{int(book_id)}", status_code=303)
