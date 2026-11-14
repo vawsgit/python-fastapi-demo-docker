@@ -52,7 +52,7 @@ def create_book_api(
     db.add(book)
     db.commit()
     db.refresh(book)
-    return RedirectResponse(url="/books", status_code=303)
+    return RedirectResponse(url='/books', status_code=303)
 
 
 @app.get("/books")
