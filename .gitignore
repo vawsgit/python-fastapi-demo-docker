@@ -171,3 +171,5 @@ cython_debug/
 .vscode-web/
 .claude/
 .worktrees/
+run/plan.md
+run/prompt.md
