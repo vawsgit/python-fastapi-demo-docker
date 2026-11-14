@@ -27,6 +27,7 @@ select = ["E7", "E9", "F"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["server/general"]
 markers = [
     "integration: needs PostgreSQL from docker-compose.test.yml on 127.0.0.1:5433",
     "e2e: needs the running app on 127.0.0.1:8000 and a browser",
