@@ -1,0 +1,13 @@
+# Fault demonstrations only: a stand-in model endpoint, and the web port on loopback.
+# FAKE_MODE=slow docker compose -f docker-compose.yml -f docker-compose.fault.yml up -d
+services:
+  fake-bedrock:
+    image: python:3.11-slim
+    command: ["python", "/stand-in/fake_bedrock_cli.py", "--host", "0.0.0.0", "--mode", "${FAKE_MODE:-ok}"]
+    volumes: ["./tools:/stand-in:ro"]
+    networks: [webnet]
+  web:
+    ports: !override
+      - "127.0.0.1:8000:8000"
+    environment:
+      AWS_ENDPOINT_URL_BEDROCK_RUNTIME: http://fake-bedrock:9999

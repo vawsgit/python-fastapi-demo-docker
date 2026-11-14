@@ -4,7 +4,7 @@ import psycopg2
 import logging
 from urllib.parse import urlparse
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm import sessionmaker
 
 
 def wait_for_db(db_url, max_retries=10, wait_time=1):
@@ -42,6 +42,5 @@ DATABASE_URL = os.getenv("DOCKER_DATABASE_URL")
 wait_for_db(DATABASE_URL)
 
 engine = create_engine(DATABASE_URL)
-db_session = scoped_session(
-    sessionmaker(autocommit=False, autoflush=False, bind=engine)
-)
+# One session per request, so concurrent requests never share one.
+db_session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
