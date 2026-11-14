@@ -1,10 +1,11 @@
-import os
 import time
 import psycopg2
 import logging
 from urllib.parse import urlparse
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+
+from app.settings import settings
 
 
 def wait_for_db(db_url, max_retries=10, wait_time=1):
@@ -37,7 +38,7 @@ def wait_for_db(db_url, max_retries=10, wait_time=1):
     logger.error("Max retries reached. Unable to connect to the database.")
 
 
-DATABASE_URL = os.getenv("DOCKER_DATABASE_URL")
+DATABASE_URL = str(settings.database_url)
 
 wait_for_db(DATABASE_URL)
 
