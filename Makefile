@@ -1,4 +1,20 @@
-.PHONY: code-web
+.PHONY: lint test test-integration test-e2e check code-web
+
+lint:              ## format and lint checks; exit non-zero on any finding
+	uv run ruff check .
+	uv run ruff format --check .
+
+test:              ## unit tier: one process, no database
+	uv run pytest -m "not integration and not e2e"
+
+test-integration:  ## integration tier: PostgreSQL in Docker on 127.0.0.1:5433
+	docker compose -f docker-compose.test.yml up --wait --quiet-pull
+	uv run pytest -m integration; rc=$$?; docker compose -f docker-compose.test.yml down -v; exit $$rc
+
+test-e2e:          ## end-to-end tier: the running app on 127.0.0.1:8000 in a browser
+	uv run pytest -m e2e
+
+check: lint test test-integration  ## before a commit and before "done"
 
 CODE_WEB_PORT ?= 8888
 CODE_WEB_DIR := $(CURDIR)/.vscode-web
