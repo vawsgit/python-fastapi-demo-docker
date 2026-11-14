@@ -5,7 +5,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from app.models import Base, Book
 from app.connect import db_session, engine
-from app.summary import summarize
+from app.summary import summarize_or_none
 
 app = FastAPI()
 
@@ -67,7 +67,7 @@ def list_books(request: Request, db: Session = Depends(get_db)):
 @app.get("/books/{book_id}")
 def read_book(request: Request, book_id: int, db: Session = Depends(get_db)):
     book = get_book(db, book_id)
-    summary = summarize(book.description)
+    summary = summarize_or_none(book.description)
     return templates.TemplateResponse(
         request,
         "book_details.html",
