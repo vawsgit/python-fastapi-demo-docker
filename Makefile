@@ -1,3 +1,19 @@
+.PHONY: help code-web docs-openapi docs-openapi-check docs-check
+
+help: ## List the targets in this file
+	@grep -hE '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) | sed 's/:.*## /\t/'
+
+docs-openapi: ## Generate docs/reference/openapi.json and routes.md from the code
+	uv run scripts/docs_openapi_cli.py
+
+docs-openapi-check: ## Fail when the generated reference is older than the code
+	uv run scripts/docs_openapi_check_cli.py
+
+docs-check: ## Build the docs strictly, check links offline, check the generated reference
+	uvx --from 'mkdocs==1.6.1' mkdocs build --strict --site-dir site
+	uvx --from lychee-bin lychee --offline --include-fragments --exclude-path 'docs/templates' README.md docs
+	$(MAKE) docs-openapi-check
+
 .PHONY: code-web
 
 CODE_WEB_PORT ?= 8888

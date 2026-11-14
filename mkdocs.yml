@@ -1,0 +1,14 @@
+site_name: Book catalogue documentation
+docs_dir: docs
+site_dir: site
+use_directory_urls: false
+nav:
+  - Home: README.md
+  - Tutorials:
+      - Add your first book: tutorials/add-your-first-book.md
+  - How-to guides:
+      - Run the app with Docker Compose: how-to/run-the-app-with-docker-compose.md
+  - Reference:
+      - Routes: reference/routes.md
+  - Explanation:
+      - How the app is built: explanation/how-the-app-is-built.md

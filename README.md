@@ -1,6 +1,8 @@
 # FastAPI Book Management Application
 This application is a simple, lightweight Book Management API built with FastAPI and SQLAlchemy. It offers CRUD operations to manage a collection of books. Each book has a unique id, a title, an author, and a description. It is designed with a focus on simplicity, flexibility, and performance, and is ready for containerization with Docker.
 
+Documentation: see [docs/README.md](docs/README.md).
+
 ## About
 - 📦 This app has been refactored for containerization, promoting consistent operating environments and seamless deployments using [Docker](https://www.docker.com/).
 - 🚀 This app uses the [FastAPI](https://fastapi.tiangolo.com/) framework. FastAPI is a high-performance web framework for building APIs with Python 3.6+ that provides built-in support for asynchronous code. It is highly extensible and compatible with REST, OpenAPI, GraphQL, gRPC, and other protocols.
