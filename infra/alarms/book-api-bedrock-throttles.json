@@ -1,0 +1,12 @@
+{
+  "AlarmName": "book-api-bedrock-throttles",
+  "AlarmDescription": "Amazon Bedrock throttled book summary calls. Runbook: https://git.example.com/book-app/-/blob/main/docs/runbooks/book-api-bedrock-throttles.md",
+  "Namespace": "AWS/Bedrock",
+  "MetricName": "InvocationThrottles",
+  "Statistic": "Sum",
+  "Period": 60,
+  "EvaluationPeriods": 1,
+  "Threshold": 0,
+  "ComparisonOperator": "GreaterThanThreshold",
+  "TreatMissingData": "notBreaching"
+}

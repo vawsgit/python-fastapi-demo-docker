@@ -11,6 +11,7 @@ This runbook installs the book app's database on Amazon RDS, then the app, and p
 | Region set | `aws configure get region` | The target Region, such as `us-west-2` |
 | Docker | `docker info --format '{{.ServerVersion}}'` | A version number |
 | uv | `uv --version` | `uv 0.` |
+| The Amazon EKS cluster stack `eksctl-managednode-quickstart-cluster` | `aws cloudformation describe-stacks --stack-name eksctl-managednode-quickstart-cluster --query 'Stacks[0].StackStatus' --output text` | `CREATE_COMPLETE` |
 | Database password in your secret store | `aws secretsmanager describe-secret --secret-id book-db-master` | The secret's ARN |
 
 ## Parameters
