@@ -5,6 +5,9 @@
 {% endblock %}
 {% block content %}
     <h2 class="text-center"><strong>All Books</strong></h2>
+    <form method="get" action="/books" class="mb-3">
+        <input type="text" name="author" placeholder="Author" class="form-control">
+    </form>
     <table class="table">
         <tr>
             <th scope="col">ID</th>

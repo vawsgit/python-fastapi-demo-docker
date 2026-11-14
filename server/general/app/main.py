@@ -56,8 +56,13 @@ def create_book_api(
 
 
 @app.get("/books")
-def list_books(request: Request, db: Session = Depends(get_db)):
-    books = db.query(Book).all()
+def list_books(
+    request: Request, author: str | None = None, db: Session = Depends(get_db)
+):
+    query = db.query(Book)
+    if author is not None:
+        query = query.filter(Book.author == author)
+    books = query.all()
     return templates.TemplateResponse(
         request, "list_books.html", {"request": request, "books": books}
     )
