@@ -38,9 +38,19 @@
       }
     },
     "/books": {
-      "get": {
-        "summary": "List Books",
-        "operationId": "list_books_books_get",
+      "post": {
+        "summary": "Create Book Api",
+        "operationId": "create_book_api_books_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_book_api_books_post"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -49,22 +59,41 @@
                 "schema": {}
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
           }
         }
       },
-      "post": {
-        "summary": "Create Book Api",
-        "operationId": "create_book_api_books_post",
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_create_book_api_books_post"
-              }
+      "get": {
+        "summary": "List books",
+        "description": "Show every book, or only the books whose author contains `author`. Case does not matter.",
+        "operationId": "list_books_books_get",
+        "parameters": [
+          {
+            "name": "author",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Author"
             }
-          },
-          "required": true
-        },
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",

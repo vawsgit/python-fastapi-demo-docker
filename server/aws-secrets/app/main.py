@@ -55,9 +55,13 @@ def create_book_api(
     return RedirectResponse(url="/books", status_code=303)
 
 
-@app.get("/books")
-def list_books(request: Request, db: Session = Depends(get_db)):
-    books = db.query(Book).all()
+@app.get("/books", summary="List books")
+def list_books(request: Request, author: str | None = None, db: Session = Depends(get_db)):
+    """Show every book, or only the books whose author contains `author`. Case does not matter."""
+    query = db.query(Book)
+    if author:
+        query = query.filter(Book.author.ilike(f"%{author}%"))
+    books = query.all()
     return templates.TemplateResponse(
         request, "list_books.html", {"request": request, "books": books}
     )

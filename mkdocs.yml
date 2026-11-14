@@ -8,6 +8,7 @@ nav:
       - Add your first book: tutorials/add-your-first-book.md
   - How-to guides:
       - Run the app with Docker Compose: how-to/run-the-app-with-docker-compose.md
+      - Find books by author: how-to/find-books-by-author.md
   - Reference:
       - Routes: reference/routes.md
   - Explanation:

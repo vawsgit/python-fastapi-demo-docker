@@ -11,7 +11,7 @@ Never edit this page by hand.
 | Route | Summary | Query parameters |
 |---|---|---|
 | `GET /` | Read Root | none |
-| `GET /books` | List Books | none |
+| `GET /books` | List books | `author` |
 | `POST /books` | Create Book Api | none |
 | `GET /books/{book_id}` | Read Book | none |
 | `GET /books/{book_id}/delete` | Delete Book | none |
