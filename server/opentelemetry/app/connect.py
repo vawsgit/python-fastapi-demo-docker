@@ -37,6 +37,7 @@ def wait_for_db(db_url, max_retries=10, wait_time=1):
 
     logger.error("Max retries reached. Unable to connect to the database.")
 
+
 DATABASE_URL = os.getenv("DOCKER_DATABASE_URL")
 
 wait_for_db(DATABASE_URL)
@@ -45,9 +46,7 @@ engine = create_engine(DATABASE_URL)
 
 # SqlAlchemy Instrumentor for Open Telemetry
 SQLAlchemyInstrumentor().instrument(
-    engine=engine,
-    enable_commenter=True, 
-    commenter_options={}
+    engine=engine, enable_commenter=True, commenter_options={}
 )
 db_session = scoped_session(
     sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
+
 def wait_for_db(db_url, max_retries=10, wait_time=1):
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
@@ -34,6 +35,7 @@ def wait_for_db(db_url, max_retries=10, wait_time=1):
             retries += 1
 
     logger.error("Max retries reached. Unable to connect to the database.")
+
 
 DATABASE_URL = os.getenv("DOCKER_DATABASE_URL")
 
