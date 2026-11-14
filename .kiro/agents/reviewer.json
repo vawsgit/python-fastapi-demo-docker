@@ -1,0 +1,14 @@
+{
+  "name": "reviewer",
+  "description": "Reviews a merge request diff it did not write.",
+  "prompt": "Follow docs/review-criteria.md. The acceptance criteria and the scope are in the branch's commit messages; read them with git log. Use shell only for git diff, git log and git show, one command at a time, with no pipes or redirects. Do not run builds or tests, and do not create files or worktrees.",
+  "resources": ["file://docs/review-criteria.md"],
+  "tools": ["read", "grep", "glob", "shell"],
+  "permissions": {
+    "rules": [
+      {"capability": "shell", "match": ["git diff*", "git log*", "git show*", "git branch*", "git status*"], "effect": "allow"},
+      {"capability": "fs_read", "effect": "allow"}
+    ],
+    "policies": ["read-only-shell"]
+  }
+}
