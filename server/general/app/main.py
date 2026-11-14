@@ -60,7 +60,7 @@ def list_books(
     request: Request, author: str | None = None, db: Session = Depends(get_db)
 ):
     query = db.query(Book)
-    if author is not None:
+    if author:
         query = query.filter(Book.author == author)
     books = query.all()
     return templates.TemplateResponse(
