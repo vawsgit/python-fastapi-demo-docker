@@ -1,0 +1,26 @@
+# One job per local tier, cheapest first. Each job runs the same make target as a laptop.
+image: ghcr.io/astral-sh/uv:python3.11-bookworm
+
+stages: [static, test, integration, e2e]
+
+lint:
+  stage: static
+  script: [make lint]
+
+test:
+  stage: test
+  script: [make test]
+
+test-integration:
+  stage: integration
+  services: [postgres:15]
+  variables:
+    POSTGRES_DB: bookstore
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+    DOCKER_DATABASE_URL: postgresql://test:test@postgres:5432/bookstore
+  script: [make test-integration-only]
+
+test-e2e:
+  stage: e2e
+  script: [make test-e2e]

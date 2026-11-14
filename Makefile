@@ -1,15 +1,21 @@
-.PHONY: lint test test-integration test-e2e check code-web
+.PHONY: lint fmt test test-integration test-integration-only test-e2e check code-web
 
 lint:              ## format and lint checks; exit non-zero on any finding
 	uv run ruff check .
 	uv run ruff format --check .
+
+fmt:               ## rewrite the code in the project's format
+	uv run ruff format .
 
 test:              ## unit tier: one process, no database
 	uv run pytest -m "not integration and not e2e"
 
 test-integration:  ## integration tier: PostgreSQL in Docker on 127.0.0.1:5433
 	docker compose -f docker-compose.test.yml up --wait --quiet-pull
-	uv run pytest -m integration; rc=$$?; docker compose -f docker-compose.test.yml down -v; exit $$rc
+	$(MAKE) test-integration-only; rc=$$?; docker compose -f docker-compose.test.yml down -v; exit $$rc
+
+test-integration-only:  ## integration tests against a database that is already running
+	uv run pytest -m integration
 
 test-e2e:          ## end-to-end tier: the running app on 127.0.0.1:8000 in a browser
 	uv run pytest -m e2e

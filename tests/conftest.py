@@ -46,7 +46,7 @@ def unit_app():
 
 @pytest.fixture
 def app_module():
-    os.environ["DOCKER_DATABASE_URL"] = TEST_DATABASE_URL
+    os.environ.setdefault("DOCKER_DATABASE_URL", TEST_DATABASE_URL)
     module = _import_app()
     yield module
     module.Base.metadata.drop_all(bind=module.engine)
