@@ -1,3 +1,4 @@
+import os
 import time
 import psycopg2
 import logging
@@ -69,7 +70,8 @@ def get_secret(secret_name):
         else:
             return get_secret_value_response['SecretBinary']
 
-secret_data = get_secret('eksdevworkshop-db-url')
+# Each environment names its own secret, so one image serves dev, staging and prod.
+secret_data = get_secret(os.environ["DB_SECRET_NAME"])
 
 # Parse the json string in secret_data and extract connectionstring
 DATABASE_URL = json.loads(secret_data)['connectionstring']
