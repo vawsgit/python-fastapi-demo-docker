@@ -1,7 +1,7 @@
 """Fixtures that import the general variant's app with a chosen database.
 
 `unit_app` swaps in an in-memory SQLite engine, so the unit tier needs no database.
-`app_module` connects to the PostgreSQL that `make test-integration` starts on port 5433.
+`app_module` connects to the PostgreSQL that `make test-integration` starts on `TEST_DB_PORT`.
 """
 
 import importlib
@@ -16,7 +16,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
 GENERAL = Path(__file__).resolve().parent.parent / "server" / "general"
-TEST_DATABASE_URL = "postgresql://test:test@127.0.0.1:5433/bookstore"
+TEST_DB_PORT = os.environ.get("TEST_DB_PORT", "5433")
+TEST_DATABASE_URL = f"postgresql://test:test@127.0.0.1:{TEST_DB_PORT}/bookstore"
 
 
 def _import_app(connect=None):

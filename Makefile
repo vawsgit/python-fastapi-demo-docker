@@ -1,3 +1,9 @@
+# Each worktree's .env sets its own COMPOSE_PROJECT_NAME, WEB_PORT and TEST_DB_PORT.
+-include .env
+COMPOSE_PROJECT_NAME ?= $(notdir $(CURDIR))
+TEST_DB_PORT ?= 5433
+export TEST_DB_PORT
+
 .PHONY: lint test test-integration test-e2e check code-web
 
 lint:              ## format and lint checks; exit non-zero on any finding
@@ -7,9 +13,9 @@ lint:              ## format and lint checks; exit non-zero on any finding
 test:              ## unit tier: one process, no database
 	uv run pytest -m "not integration and not e2e"
 
-test-integration:  ## integration tier: PostgreSQL in Docker on 127.0.0.1:5433
-	docker compose -f docker-compose.test.yml up --wait --quiet-pull
-	uv run pytest -m integration; rc=$$?; docker compose -f docker-compose.test.yml down -v; exit $$rc
+test-integration:  ## integration tier: PostgreSQL in Docker on 127.0.0.1:$(TEST_DB_PORT)
+	docker compose -p $(COMPOSE_PROJECT_NAME)-test -f docker-compose.test.yml up --wait --quiet-pull
+	uv run pytest -m integration; rc=$$?; docker compose -p $(COMPOSE_PROJECT_NAME)-test -f docker-compose.test.yml down -v; exit $$rc
 
 test-e2e:          ## end-to-end tier: the running app on 127.0.0.1:8000 in a browser
 	uv run pytest -m e2e
