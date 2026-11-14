@@ -1,10 +1,11 @@
 import os
 from fastapi import FastAPI, HTTPException, Request, Form, Depends
-from fastapi.responses import RedirectResponse
+from fastapi.responses import PlainTextResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from app.models import Base, Book
 from app.connect import db_session, engine
+from app.summary import summarize
 
 app = FastAPI()
 
@@ -71,6 +72,12 @@ def read_book(request: Request, book_id: int, db: Session = Depends(get_db)):
     )
 
 
+@app.get("/books/{book_id}/summary", response_class=PlainTextResponse)
+def summarize_book(book_id: int, db: Session = Depends(get_db)):
+    book = get_book(db, book_id)
+    return summarize(book.description) + "\n"
+
+
 @app.get("/books/{book_id}/update")
 def update_book_form(request: Request, book_id: int, db: Session = Depends(get_db)):
     book = get_book(db, book_id)
@@ -83,15 +90,15 @@ def update_book_form(request: Request, book_id: int, db: Session = Depends(get_d
 def update_book(
     request: Request,
     book_id: int,
-    title: str = Form(...),
-    author: str = Form(...),
-    description: str = Form(...),
+    title: str | None = Form(None),
+    author: str | None = Form(None),
+    description: str | None = Form(None),
     db: Session = Depends(get_db),
 ):
     book = get_book(db, book_id)
-    book.title = title
-    book.author = author
-    book.description = description
+    book.title = title or book.title
+    book.author = author or book.author
+    book.description = description or book.description
     db.commit()
     return RedirectResponse(url=f"/books/{int(book_id)}", status_code=303)
 

@@ -1,0 +1,11 @@
+stages: [scan]
+
+secret-scan:
+  stage: scan
+  image:
+    name: ghcr.io/gitleaks/gitleaks:v8.28.0
+    entrypoint: [""]
+  variables:
+    GIT_DEPTH: 0  # the whole history, so a key removed in a later commit is still found
+  script:
+    - gitleaks git --redact -v .

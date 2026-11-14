@@ -1,0 +1,14 @@
+# Demonstrations only: a stand-in model endpoint that replays recorded responses,
+# the web port on loopback, and a server that reloads on each code change.
+services:
+  fake-bedrock:
+    image: python:3.11-slim
+    command: ["python", "/stand-in/fake_bedrock_cli.py", "--host", "0.0.0.0"]
+    volumes: ["./tools:/stand-in:ro"]
+    networks: [webnet]
+  web:
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports: !override
+      - "127.0.0.1:8000:8000"
+    environment:
+      AWS_ENDPOINT_URL_BEDROCK_RUNTIME: http://fake-bedrock:9999
